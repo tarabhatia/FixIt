@@ -23,8 +23,7 @@
         app:layout_constraintBottom_toTopOf="@+id/password_signin_et"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
-        android:autofillHints="" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <EditText
         android:id="@+id/password_signin_et"
@@ -42,12 +41,11 @@
         app:layout_constraintBottom_toTopOf="@+id/btnSignUp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/username_signin_et"
-        android:autofillHints="" />
+        app:layout_constraintTop_toBottomOf="@+id/username_signin_et" />
 
     <Button
         android:id="@+id/btnSignUp"
-        style="@android:style/Widget.Material.Button.Inset"
+        style="@android:style/Widget.Material.Button.Small"
         android:layout_width="326dp"
         android:layout_height="63dp"
         android:layout_marginStart="8dp"
@@ -56,30 +54,25 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="192dp"
-        android:background="#E28FE3D9"
-        android:fontFamily="sans-serif-black"
-        android:text="@string/let_s_fix"
+        android:background="#8FE3D9"
+        android:text="Sign Up"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textColor="#FFFFFF"
+        android:textColor="#FF9800"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.507"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password_signin_et"
-        tools:targetApi="lollipop" />
+        app:layout_constraintTop_toBottomOf="@+id/password_signin_et" />
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="310dp"
-        android:layout_height="294dp"
+        android:layout_width="217dp"
+        android:layout_height="213dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="60dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="6dp"
-        app:layout_constraintBottom_toTopOf="@+id/username_signin_et"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
