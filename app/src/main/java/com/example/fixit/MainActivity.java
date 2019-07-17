@@ -2,6 +2,8 @@ package com.example.fixit;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -17,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
     TextView test;
     Button button;
+    Button btnUserActivity;
 
     DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
     DatabaseReference conditionRef = mRootRef.child("condition");
@@ -28,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
         test = findViewById(R.id.test);
         button = findViewById(R.id.button);
+        btnUserActivity = findViewById(R.id.btnUserActivity);
 
     }
 
@@ -47,14 +51,21 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        btnUserActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, UserActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 conditionRef.setValue("Hello World");
             }
         });
-
-
 
 
     }
