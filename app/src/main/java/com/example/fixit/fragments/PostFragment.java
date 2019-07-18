@@ -11,9 +11,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -42,6 +44,7 @@ public class PostFragment extends Fragment {
     private ImageView btnCaptureImage;
     private ImageView ivPostImage;
     private Button btnSubmit;
+    private Spinner categories;
 
 
     @Nullable
@@ -58,7 +61,12 @@ public class PostFragment extends Fragment {
         btnCaptureImage = view.findViewById(R.id.btnCaptureImage);
         ivPostImage = view.findViewById(R.id.ivPicture);
         btnSubmit = view.findViewById(R.id.btnSubmit);
+        categories = view.findViewById(R.id.spCategories);
 
+        ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(getContext(),
+                android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.categories));
+        myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        categories.setAdapter(myAdapter);
 
         btnCaptureImage.setOnClickListener(new View.OnClickListener() {
             @Override
