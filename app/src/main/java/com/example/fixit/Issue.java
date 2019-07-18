@@ -1,11 +1,17 @@
 package com.example.fixit;
 
+import android.net.Uri;
+
+import java.util.Date;
+
 public class Issue {
 
     User user;
     String category;
     String description;
     String issueID;
+    Date date;
+    Uri issuePhoto;
 
     public Issue(){}
 
@@ -47,4 +53,13 @@ public class Issue {
     public void setIssueID(String issueID) {
         this.issueID = issueID;
     }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
 }
