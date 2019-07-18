@@ -3,22 +3,20 @@ package com.example.fixit;
 public class User {
 
     private String username;
-    private String password;
     private String profilePhoto;
     private String userUid;
 
 
     public User(){}
 
-    public User(String username, String password, String userUid){
+    public User(String username, String userUid){
         this.username = username;
-        this.password = password;
         this.userUid = userUid;
         this.profilePhoto = null;
     }
 
     public User(String username, String password, String userUid, String profilePhoto){
-        this.equals(new User(username, password, userUid));
+        this.equals(new User(username, userUid));
         this.profilePhoto = profilePhoto;
     }
 
@@ -30,13 +28,6 @@ public class User {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     public String getProfilePhoto() {
         return profilePhoto;
