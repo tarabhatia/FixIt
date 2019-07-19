@@ -68,8 +68,8 @@ public class PostFragment extends Fragment {
     private Issue issue;
     private Uri uriPictureIssue;
     private File photoFile;
-    private LatLng location;
     private Location aux;
+
 
 
     @Nullable
@@ -89,6 +89,7 @@ public class PostFragment extends Fragment {
         btnSubmit = view.findViewById(R.id.btnSubmit);
         etTitle = view.findViewById(R.id.etTitle);
         aux = null;
+
 
         // Initialize Storage
         mStorage = FirebaseStorage.getInstance();
@@ -124,6 +125,7 @@ public class PostFragment extends Fragment {
         // Initialize Places.
         Places.initialize(getContext(), "AIzaSyBR_HirBjq-d46IBvG40f16aqHJ20LHoSw\n");
 
+
         // Create a new Places client instance.
         PlacesClient placesClient = Places.createClient(getContext());
 
@@ -132,25 +134,24 @@ public class PostFragment extends Fragment {
 
         autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS));
 
+
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(@NonNull Place place) {
                 // TODO: Get info about the selected place.
                 aux = new Location(place.getLatLng().latitude, place.getLatLng().longitude, place.getAddress(), place.getName());
                 Toast.makeText(getContext(), aux.getName() + " Success!!", Toast.LENGTH_LONG).show();
-//                location = place.getLatLng();
             }
 
             @Override
             public void onError(@NonNull Status status) {
                 // TODO: Handle the error
-                location = null;
                 Toast.makeText(getContext(), "Failed to calculate location", Toast.LENGTH_LONG).show();
             }
         });
 
-
     }
+
 
     private void postIssue() {
         // Create a new issue with a different key
@@ -160,7 +161,6 @@ public class PostFragment extends Fragment {
         //Extract information necessary to create the issue
         String description = etDescription.getText().toString();
         String title = etTitle.getText().toString();
-//        issue = new Issue(description, title, location.latitude, location.latitude);
         issue = new Issue(title, key, description, aux);
         // Adjust issue values
         mPostReference.setValue(issue);
