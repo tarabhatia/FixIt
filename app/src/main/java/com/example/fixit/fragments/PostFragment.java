@@ -1,9 +1,13 @@
 package com.example.fixit.fragments;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +20,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
 import com.example.fixit.Issue;
@@ -28,6 +33,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.File;
+import java.io.IOException;
+
 public class PostFragment extends Fragment {
 
     private final static int PICK_PHOTO_CODE = 1046;
@@ -35,11 +43,12 @@ public class PostFragment extends Fragment {
     private final static String POST_ROUTE = "posts";
     private final static String IMAGE_STORAGE_ROUTE = "images/";
     private static final String IMAGE_FORMAT = ".jpg";
-    private static int size;
-    private final static int STEP = 20;
-
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+    public final String APP_TAG = "MyCustomApp";
+    public String photoFileName = "photo.jpg";
 
     private ImageButton btnPickFromGallery;
+    private ImageButton btnTakePicture;
     private ImageView ivPreview;
     private EditText etDescription;
     private Button btnSubmit;
@@ -47,7 +56,9 @@ public class PostFragment extends Fragment {
     private FirebaseStorage mStorage;
     private FirebaseDatabase mDatabase;
     private Issue issue;
-    private Uri file;
+    private Uri uriPictureIssue;
+    private File photoFile;
+
 
     @Nullable
     @Override
@@ -60,6 +71,7 @@ public class PostFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         btnPickFromGallery = view.findViewById(R.id.btnPickFromGallery);
+        btnTakePicture = view.findViewById(R.id.btnTakePicture);
         ivPreview = view.findViewById(R.id.ivPreview);
         etDescription = view.findViewById(R.id.etDescription);
         btnSubmit = view.findViewById(R.id.btnSubmit);
@@ -84,17 +96,27 @@ public class PostFragment extends Fragment {
                 postIssue();
             }
         });
-        file = null;
-        size = 0;
+
+        btnTakePicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dispatchTakePictureIntent();
+            }
+        });
 
     }
 
     private void postIssue() {
+        // Create a new issue with a different key
         DatabaseReference mPostReference = mDatabase.getReference().child(POST_ROUTE).push();
+        // Save new key
         String key = mPostReference.getKey();
+        //Extract information necessary to create the issue
         String description = etDescription.getText().toString();
         issue = new Issue(description, key);
+        // Adjust issue values
         mPostReference.setValue(issue);
+        // Upload image to storage
         upLoadFileToStorage(key);
     }
 
@@ -108,37 +130,83 @@ public class PostFragment extends Fragment {
         // So as long as the result is not null, it's safe to use the intent.
         if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
             // Bring up gallery to select a photo
-           startActivityForResult(intent, PICK_PHOTO_CODE);
+            startActivityForResult(intent, PICK_PHOTO_CODE);
+        }
+    }
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        File storageDir =new File(getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), APP_TAG);
+        // Create the storage directory if it does not exist
+        if (!storageDir.exists() && !storageDir.mkdirs()){
+            Toast.makeText(getContext(), "Failed to create directory", Toast.LENGTH_LONG).show();
+        }
+        // Return the file target for the photo based on filename
+        File image = new File(storageDir.getPath() + File.separator + photoFileName);
+
+        return image;
+    }
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+            // Create the File where the photo should go
+            photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                uriPictureIssue = FileProvider.getUriForFile(getContext(),
+                        "com.codepath.fileprovider",
+                        photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uriPictureIssue);
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            }
         }
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(data != null) {
-            file = data.getData();
-            Toast.makeText(getContext(), "File Ready to Upload", Toast.LENGTH_LONG).show();
+        if(resultCode == Activity.RESULT_OK && data != null) {
+            if(requestCode == PICK_PHOTO_CODE) {
+                uriPictureIssue = data.getData();
+                ivPreview.setImageURI(uriPictureIssue);
+                Toast.makeText(getContext(), "Upload from Gallery", Toast.LENGTH_LONG).show();
+            }
+            else if(requestCode == REQUEST_IMAGE_CAPTURE){
+                // by this point we have the camera photo on disk
+                Bitmap takenImage = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
+                // Load the taken image into a preview
+                ivPreview.setImageBitmap(takenImage);
+                Toast.makeText(getContext(), "Upload from Camera", Toast.LENGTH_LONG).show();
+            }
         }else{
             Toast.makeText(getContext(), "Error selecting image", Toast.LENGTH_LONG).show();
         }
     }
 
     public void upLoadFileToStorage(String key){
-        if(file != null) {
+//        Uri aux = Uri.fromFile(photoFile.getAbsoluteFile());
+        if(uriPictureIssue != null) {
             StorageReference mImageRef = mStorage.getReference().child(IMAGE_STORAGE_ROUTE + key + IMAGE_FORMAT);
-            mImageRef.putFile(file).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            mImageRef.putFile(uriPictureIssue).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
                     // Successfully uploaded
                     Toast.makeText(getContext(), "Uploaded", Toast.LENGTH_LONG).show();
                 }
             })
-            .addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    // Handle unsuccessful uploads
-                    Toast.makeText(getContext(), "Uploading failed", Toast.LENGTH_LONG).show();
-                }
-            });
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            // Handle unsuccessful uploads
+                            Toast.makeText(getContext(), "Uploading failed", Toast.LENGTH_LONG).show();
+                        }
+                    });
         }
         else{
             Toast.makeText(getContext(), "Select an image before issueing", Toast.LENGTH_LONG).show();

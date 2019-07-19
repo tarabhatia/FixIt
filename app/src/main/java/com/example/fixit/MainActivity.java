@@ -1,37 +1,43 @@
 package com.example.fixit;
+// Add an import statement for the client library.
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.storage.StorageReference;
+
+import java.util.Arrays;
 
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = "Autocomplete";
     private FirebaseAuth mAuth;
-    private StorageReference mStorageRef;
-    private DatabaseReference mDatabase;
-    StorageReference riversRef;
     private EditText usernameSignUp;
     private EditText passwordSignUp;
     private Button signUpbtn;
-    private Button uploadBtn;
-    private User user;
-    private ImageView ivPreview;
+    private TextView tvPlace;
+    private String apiKey = "AIzaSyBR_HirBjq-d46IBvG40f16aqHJ20LHoSw";
+//    private Button uploadBtn;
+//    private User user;
+//    private ImageView ivPreview;
 
 
 
@@ -43,9 +49,7 @@ public class MainActivity extends AppCompatActivity {
         usernameSignUp = findViewById(R.id.username_signin_et);
         passwordSignUp = findViewById(R.id.password_signin_et);
         signUpbtn = findViewById(R.id.btnSignUp);
-        uploadBtn = findViewById(R.id.btnUpload);
-        ivPreview = findViewById(R.id.ivPreview);
-
+        tvPlace = findViewById(R.id.tvPlace);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -53,15 +57,39 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 SignUp();
-//                Intent intent = new Intent(MainActivity.this, UserActivity.class);
-//                startActivity(intent);
-//                finish();
+
             }
         });
 
-        Intent intent = new Intent(MainActivity.this, UserActivity.class);
-        startActivity(intent);
-        finish();
+        if (!Places.isInitialized()) {
+            Places.initialize(getApplicationContext(), apiKey);
+        }
+
+        // Initialize Places.
+        Places.initialize(getApplicationContext(), apiKey);
+
+// Create a new Places client instance.
+        PlacesClient placesClient = Places.createClient(this);
+
+        // Initialize the AutocompleteSupportFragment.
+        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
+                getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+
+         autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
+
+         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+             @Override
+             public void onPlaceSelected(@NonNull Place place) {
+                 // TODO: Get info about the selected place.
+                tvPlace.setText(place.getLatLng().latitude + " , " + place.getLatLng().longitude);
+             }
+
+             @Override
+             public void onError(@NonNull Status status) {
+                 // TODO: Handle the error.ddufehghgefrlnhetdcetfturkinfknd
+                 tvPlace.setText("An error occurred: " + status);
+             }
+         });
     }
 
     @Override
@@ -76,7 +104,6 @@ public class MainActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     Log.d("SignUp", "createUserWithEmail:success");
-                    user = new User();
                 } else {
                     Log.w("SignUp", "createUserWithEmail:failure", task.getException());
                     Toast.makeText(MainActivity.this, "Authentication failed.",

@@ -55,7 +55,6 @@ public class TimelineFragment extends Fragment {
     }
 
     public void getIssues(){
-        final ArrayList<Issue> arrIssues = new ArrayList<>();
         Query recentPostsQuery = FirebaseDatabase.getInstance().getReference().child(POST_ROUTE).orderByKey();//.endAt("-Lk59IfKS_d2B1MJs8FZ").limitToLast(2);
         recentPostsQuery.addValueEventListener(new ValueEventListener() {
             @Override
