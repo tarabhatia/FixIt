@@ -1,3 +1,24 @@
 <resources>
     <string name="app_name">FIXIT</string>
+    <string name="let_s_fix">Let\'s fix.</string>
+
+    <string-array name="categories">
+        <item>Choose a category.</item>
+        <item>Construction Traffic Concern</item>
+        <item>Graffiti</item>
+        <item>Homeless Encampment</item>
+        <item>Illegal Dumping</item>
+        <item>Parking Machine</item>
+        <item>Parks and Playground</item>
+        <item>Pavement Marking</item>
+        <item>Pothole</item>
+        <item>Sidewalk</item>
+        <item>Storm Drain</item>
+        <item>Street Light</item>
+        <item>Street Sign Repair/Replacement</item>
+        <item>Trees</item>
+        <item>Water</item>
+        <item>Other</item>
+        <item>Custom</item>
+    </string-array>
 </resources>

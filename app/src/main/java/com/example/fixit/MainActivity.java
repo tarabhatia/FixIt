@@ -43,8 +43,7 @@ public class MainActivity extends AppCompatActivity {
         usernameSignUp = findViewById(R.id.username_signin_et);
         passwordSignUp = findViewById(R.id.password_signin_et);
         signUpbtn = findViewById(R.id.btnSignUp);
-        uploadBtn = findViewById(R.id.btnUpload);
-        ivPreview = findViewById(R.id.ivPreview);
+
 
 
         mAuth = FirebaseAuth.getInstance();
@@ -53,9 +52,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 SignUp();
-//                Intent intent = new Intent(MainActivity.this, UserActivity.class);
-//                startActivity(intent);
-//                finish();
+                Intent intent = new Intent(MainActivity.this, UserActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
 

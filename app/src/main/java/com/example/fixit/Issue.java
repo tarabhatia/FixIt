@@ -1,24 +1,33 @@
 package com.example.fixit;
 
+import android.location.Geocoder;
 import android.net.Uri;
 
 import java.util.Date;
+import java.util.Locale;
 
 public class Issue {
 
     User user;
-    String category;
+    String title;
     String description;
+    Double lat;
+    Double lon;
     String issueID;
     Date date;
     Uri issuePhoto;
 
+
     public Issue(){}
 
-    public Issue(String description, String issueID){
+
+
+    public Issue(String title, String description, Double lat, Double lon, String issueID){
         user = null;
-        category = null;
         this.description = description;
+        this.lat = lat;
+        this.lon = lon;
+        this.title = title;
         this.issueID = issueID;
     }
 
@@ -30,12 +39,12 @@ public class Issue {
         this.user = user;
     }
 
-    public String getCategory() {
-        return category;
+    public String getTitle() {
+        return title;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getDescription() {
@@ -44,6 +53,22 @@ public class Issue {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Double getLat() {
+        return lat;
+    }
+
+    public void setLat(Double lat) {
+        this.lat = lat;
+    }
+
+    public Double getLon() {
+        return lon;
+    }
+
+    public void setLon(Double lon) {
+        this.lon = lon;
     }
 
     public String getIssueID() {
@@ -61,5 +86,12 @@ public class Issue {
     public void setDate(Date date) {
         this.date = date;
     }
+
+//    public void getLat(String city) {
+//        GeoPoint startGP = new GeoPoint(
+//                (int) (Double.parseDouble(getCity()) * 1E6));
+//        Double.toString((double)startGP.getLatitudeE6() / 1E6),
+//                Double.toString((double)dest.getLongitudeE6() / 1E6)
+//    }
 
 }
