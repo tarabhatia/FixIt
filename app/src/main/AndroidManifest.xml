@@ -42,7 +42,7 @@
                 android:resource="@xml/file_paths">
             </meta-data>
         </provider>
-        <meta-data android:name="com.google.android.geo.API_KEY" android:value="@string/api_autocomplete_key"/>
+        <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyBR_HirBjq-d46IBvG40f16aqHJ20LHoSw"/>
     </application>
 
     <uses-feature

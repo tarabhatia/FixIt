@@ -66,7 +66,6 @@ public class TimelineFragment extends Fragment {
                     Log.d("getting", issueSnapshot.getValue(Issue.class).getDescription());
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 

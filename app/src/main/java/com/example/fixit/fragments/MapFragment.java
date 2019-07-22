@@ -91,17 +91,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-
         MapsInitializer.initialize(getContext());
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         for (Issue anIssue : mIssues) {
-            Issue aux = anIssue;
-            if (anIssue.getLatitude() != null) {
-                LatLng marker = new LatLng(anIssue.getLatitude(), anIssue.getLongitude());
+            if (anIssue.getLocation() != null && anIssue.getLocation().getLatLng() != null) {
+                LatLng marker = anIssue.getLocation().getLatLng();
                 Marker myMark = googleMap.addMarker(new MarkerOptions().title(anIssue.getTitle()).position(marker));
                 googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(marker, DEFAULT_ZOOM));
                 myMark.showInfoWindow();
-                Log.d("Tag", "hey");
+                Log.d("c942", "hey");
             }
         }
     }
