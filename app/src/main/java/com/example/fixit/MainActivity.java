@@ -35,9 +35,6 @@ public class MainActivity extends AppCompatActivity {
     private Button signUpbtn;
     private TextView tvPlace;
     private String apiKey = "AIzaSyBR_HirBjq-d46IBvG40f16aqHJ20LHoSw";
-//    private Button uploadBtn;
-//    private User user;
-//    private ImageView ivPreview;
 
 
 
