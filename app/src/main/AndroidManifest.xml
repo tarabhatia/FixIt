@@ -45,4 +45,9 @@
         <meta-data android:name="com.google.android.geo.API_KEY" android:value="@string/api_autocomplete_key"/>
     </application>
 
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true"
+        />
+
 </manifest>

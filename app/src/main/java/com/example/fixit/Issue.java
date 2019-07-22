@@ -1,25 +1,49 @@
 package com.example.fixit;
 
-import android.net.Uri;
-
 import java.util.Date;
 
 public class Issue {
 
     User user;
-    String category;
     String description;
     String issueID;
     Date date;
-    Uri issuePhoto;
+    String title;
+    Double latitude;
+    Double longitude;
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
 
     public Issue(){}
 
-    public Issue(String description, String issueID){
+    public Issue(String description, String title, Double latitude, Double longitude){
         user = null;
-        category = null;
+        this.title = title;
         this.description = description;
-        this.issueID = issueID;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     public User getUser() {
@@ -28,14 +52,6 @@ public class Issue {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
     }
 
     public String getDescription() {

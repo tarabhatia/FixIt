@@ -25,8 +25,15 @@ import androidx.fragment.app.Fragment;
 
 import com.example.fixit.Issue;
 import com.example.fixit.R;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -35,6 +42,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 
 public class PostFragment extends Fragment {
 
@@ -51,6 +59,7 @@ public class PostFragment extends Fragment {
     private ImageButton btnTakePicture;
     private ImageView ivPreview;
     private EditText etDescription;
+    private EditText etTitle;
     private Button btnSubmit;
 
     private FirebaseStorage mStorage;
@@ -58,6 +67,7 @@ public class PostFragment extends Fragment {
     private Issue issue;
     private Uri uriPictureIssue;
     private File photoFile;
+    private LatLng location;
 
 
     @Nullable
@@ -75,7 +85,7 @@ public class PostFragment extends Fragment {
         ivPreview = view.findViewById(R.id.ivPreview);
         etDescription = view.findViewById(R.id.etDescription);
         btnSubmit = view.findViewById(R.id.btnSubmit);
-
+        etTitle = view.findViewById(R.id.etTitle);
 
         // Initialize Storage
         mStorage = FirebaseStorage.getInstance();
@@ -104,6 +114,36 @@ public class PostFragment extends Fragment {
             }
         });
 
+        if (!Places.isInitialized()) {
+            Places.initialize(getContext(), "AIzaSyBR_HirBjq-d46IBvG40f16aqHJ20LHoSw\n");
+        }
+
+        // Initialize Places.
+        Places.initialize(getContext(), "AIzaSyBR_HirBjq-d46IBvG40f16aqHJ20LHoSw\n");
+
+        // Create a new Places client instance.
+        PlacesClient placesClient = Places.createClient(getContext());
+
+        // Initialize the AutocompleteSupportFragment.
+        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment) getChildFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+
+        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
+
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(@NonNull Place place) {
+                // TODO: Get info about the selected place.
+                location = place.getLatLng();
+
+            }
+
+            @Override
+            public void onError(@NonNull Status status) {
+                // TODO: Handle the error
+            }
+        });
+
+
     }
 
     private void postIssue() {
@@ -113,7 +153,8 @@ public class PostFragment extends Fragment {
         String key = mPostReference.getKey();
         //Extract information necessary to create the issue
         String description = etDescription.getText().toString();
-        issue = new Issue(description, key);
+        String title = etTitle.getText().toString();
+        issue = new Issue(description, title, location.latitude, location.longitude);
         // Adjust issue values
         mPostReference.setValue(issue);
         // Upload image to storage
@@ -190,7 +231,6 @@ public class PostFragment extends Fragment {
     }
 
     public void upLoadFileToStorage(String key){
-//        Uri aux = Uri.fromFile(photoFile.getAbsoluteFile());
         if(uriPictureIssue != null) {
             StorageReference mImageRef = mStorage.getReference().child(IMAGE_STORAGE_ROUTE + key + IMAGE_FORMAT);
             mImageRef.putFile(uriPictureIssue).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -226,6 +266,4 @@ public class PostFragment extends Fragment {
             }
         }
     }
-
-
 }
