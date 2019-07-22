@@ -1,7 +1,5 @@
 package com.example.fixit;
 
-import com.google.android.libraries.places.api.model.Place;
-
 import java.util.Date;
 
 public class Issue {
@@ -11,15 +9,17 @@ public class Issue {
     String issueID;
     Date date;
     String title;
-    Place location;
+    Double latitude;
+    Double longitude;
 
     public Issue(){}
 
-    public Issue(String description, String title, Place location){
+    public Issue(String description, String title, Double latitude, Double longitude){
         user = null;
         this.title = title;
         this.description = description;
-        this.location = location;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     public String getTitle() {
@@ -62,11 +62,19 @@ public class Issue {
         this.date = date;
     }
 
-    public Place getLocation() {
-        return location;
+    public Double getLatitude() {
+        return latitude;
     }
 
-    public void setLocation(Place location) {
-        this.location = location;
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
     }
 }

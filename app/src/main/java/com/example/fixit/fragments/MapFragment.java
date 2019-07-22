@@ -94,12 +94,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         MapsInitializer.initialize(getContext());
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         for (Issue anIssue : mIssues) {
-            if (anIssue.getLocation() != null && anIssue.getLocation().getLatLng() != null) {
-                LatLng marker = anIssue.getLocation().getLatLng();
+            if (anIssue.getLatitude() != null) {
+                LatLng marker = new LatLng(anIssue.getLatitude(), anIssue.getLongitude());
                 Marker myMark = googleMap.addMarker(new MarkerOptions().title(anIssue.getTitle()).position(marker));
                 googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(marker, DEFAULT_ZOOM));
                 myMark.showInfoWindow();
-                Log.d("c942", "hey");
+                Log.d("tag", "hey");
             }
         }
     }

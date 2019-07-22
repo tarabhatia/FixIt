@@ -26,6 +26,7 @@ import androidx.fragment.app.Fragment;
 import com.example.fixit.Issue;
 import com.example.fixit.R;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.libraries.places.api.Places;
@@ -66,7 +67,7 @@ public class PostFragment extends Fragment {
     private Issue issue;
     private Uri uriPictureIssue;
     private File photoFile;
-    private Place location;
+    private LatLng location;
 
 
     @Nullable
@@ -132,7 +133,7 @@ public class PostFragment extends Fragment {
             @Override
             public void onPlaceSelected(@NonNull Place place) {
                 // TODO: Get info about the selected place.
-                location = place;
+                location = place.getLatLng();
             }
 
             @Override
@@ -154,7 +155,7 @@ public class PostFragment extends Fragment {
         //Extract information necessary to create the issue
         String description = etDescription.getText().toString();
         String title = etTitle.getText().toString();
-        issue = new Issue(description, title, location);
+        issue = new Issue(description, title, location.latitude, location.latitude);
         // Adjust issue values
         mPostReference.setValue(issue);
         // Upload image to storage
