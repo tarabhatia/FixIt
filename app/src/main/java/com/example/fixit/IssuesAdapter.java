@@ -61,6 +61,7 @@ public class IssuesAdapter extends RecyclerView.Adapter<IssuesAdapter.ViewHolder
         TextView tvTimestamp;
         TextView tvStatus;
         TextView tvFixvotes;
+        TextView tvAddress;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -70,6 +71,7 @@ public class IssuesAdapter extends RecyclerView.Adapter<IssuesAdapter.ViewHolder
             tvTimestamp = itemView.findViewById(R.id.tvTimeStampSingle);
             tvStatus = itemView.findViewById(R.id.tvStatusSingle);
             tvFixvotes = itemView.findViewById(R.id.tvFixVotes);
+            tvAddress = itemView.findViewById(R.id.tvAddressSingle);
 
         }
 
@@ -78,6 +80,7 @@ public class IssuesAdapter extends RecyclerView.Adapter<IssuesAdapter.ViewHolder
             tvTimestamp.setText(issue.getDate().toString());
             tvStatus.setText("Process");
             tvFixvotes.setText(issue.getFixvotes()+"");
+            tvAddress.setText(issue.getLocation().getAddress());
             try {
                 downloadFile(issue.getIssueID());
             } catch (IOException e) {
