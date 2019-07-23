@@ -10,6 +10,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        defaultConfig.applicationId="com.example.fixit"
     }
     buildTypes {
         release {
@@ -20,11 +21,11 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.appcompat:appcompat:1.0.0'
-    implementation "com.android.support:appcompat-v7:28.0.0"
-    implementation "com.android.support:design:28.0.0"
-    implementation "com.android.support:recyclerview-v7:28.0.0"
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support:design:28.0.0'
+    implementation 'com.android.support:recyclerview-v7:28.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.0'
@@ -45,6 +46,9 @@ dependencies {
     implementation 'com.google.android.libraries.places:places:2.0.0'
     implementation 'com.android.support:cardview-v7:28.0.0'
     implementation 'com.google.android.libraries.places:places:1.0.0'
+    //implementation "com.google.android.gms:play-services-maps:$googlePlayVersion"
+    //implementation "com.google.android.gms:play-services-location:$googlePlayVersion"
+    implementation 'de.hdodenhof:circleimageview:3.0.0'
 }
 
 apply plugin: 'com.google.gms.google-services'
