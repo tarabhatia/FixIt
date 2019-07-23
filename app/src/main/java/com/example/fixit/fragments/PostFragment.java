@@ -24,6 +24,7 @@ import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
 import com.example.fixit.Issue;
+import com.example.fixit.Location;
 import com.example.fixit.R;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.model.LatLng;
@@ -68,6 +69,7 @@ public class PostFragment extends Fragment {
     private Uri uriPictureIssue;
     private File photoFile;
     private LatLng location;
+    private Location aux;
 
 
     @Nullable
@@ -86,6 +88,7 @@ public class PostFragment extends Fragment {
         etDescription = view.findViewById(R.id.etDescription);
         btnSubmit = view.findViewById(R.id.btnSubmit);
         etTitle = view.findViewById(R.id.etTitle);
+        aux = null;
 
         // Initialize Storage
         mStorage = FirebaseStorage.getInstance();
@@ -133,7 +136,9 @@ public class PostFragment extends Fragment {
             @Override
             public void onPlaceSelected(@NonNull Place place) {
                 // TODO: Get info about the selected place.
-                location = place.getLatLng();
+                aux = new Location(place.getLatLng().latitude, place.getLatLng().longitude, place.getAddress(), place.getName());
+                Toast.makeText(getContext(), aux.getName() + " Success!!", Toast.LENGTH_LONG).show();
+//                location = place.getLatLng();
             }
 
             @Override
@@ -155,7 +160,8 @@ public class PostFragment extends Fragment {
         //Extract information necessary to create the issue
         String description = etDescription.getText().toString();
         String title = etTitle.getText().toString();
-        issue = new Issue(description, title, location.latitude, location.latitude);
+//        issue = new Issue(description, title, location.latitude, location.latitude);
+        issue = new Issue(title, key, description, aux);
         // Adjust issue values
         mPostReference.setValue(issue);
         // Upload image to storage

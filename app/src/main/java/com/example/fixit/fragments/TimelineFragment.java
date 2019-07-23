@@ -55,13 +55,13 @@ public class TimelineFragment extends Fragment {
     }
 
     public void getIssues(){
-        Query recentPostsQuery = FirebaseDatabase.getInstance().getReference().child(POST_ROUTE).orderByKey();//.endAt("-Lk59IfKS_d2B1MJs8FZ").limitToLast(2);
+        Query recentPostsQuery = FirebaseDatabase.getInstance().getReference().child(POST_ROUTE).orderByKey().limitToLast(5);//.endAt("-Lk59IfKS_d2B1MJs8FZ").limitToLast(2);
         recentPostsQuery.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot issueSnapshot: dataSnapshot.getChildren()) {
-                    // TODO: handle the post
-                    mIssues.add(issueSnapshot.getValue(Issue.class));
+                    Issue temp = issueSnapshot.getValue(Issue.class);
+                    mIssues.add(temp);
                     adapter.notifyDataSetChanged();
                     Log.d("getting", issueSnapshot.getValue(Issue.class).getDescription());
                 }
