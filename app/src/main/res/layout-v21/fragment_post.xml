@@ -11,7 +11,9 @@
     <ScrollView
         android:id="@+id/scrollView3"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="136dp"
+        tools:layout_editor_absoluteY="99dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -19,8 +21,9 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/idCardView"
-                android:layout_width="405dp"
-                android:layout_height="54dp"
+                android:layout_width="406dp"
+                android:layout_height="60dp"
+                app:cardBackgroundColor="#FFFFFF"
                 app:cardCornerRadius="4dp"
                 app:layout_constraintBottom_toTopOf="@+id/ivPreview"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -41,10 +44,11 @@
                 android:layout_height="249dp"
                 android:layout_marginEnd="2dp"
                 android:layout_marginRight="2dp"
+                android:background="#FFFFFF"
                 android:contentDescription="TODO"
                 app:layout_constraintBottom_toTopOf="@+id/btnPickFromGallery"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/idCardView"
                 app:srcCompat="@drawable/postinstru" />
@@ -67,7 +71,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btnTakePicture" />
+                app:layout_constraintTop_toBottomOf="@+id/imageView5" />
 
             <ImageButton
                 android:id="@+id/btnTakePicture"
@@ -79,7 +83,7 @@
                 android:layout_marginRight="60dp"
                 android:layout_marginBottom="16dp"
                 android:background="#FFFFFF"
-                app:layout_constraintBottom_toTopOf="@+id/etTitle"
+                app:layout_constraintBottom_toTopOf="@+id/imageView5"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toEndOf="@+id/tvOr"
@@ -157,7 +161,7 @@
                 android:layout_marginBottom="44dp"
                 android:background="#FFFFFF"
                 android:cropToPadding="false"
-                app:layout_constraintBottom_toTopOf="@+id/etTitle"
+                app:layout_constraintBottom_toTopOf="@+id/imageView5"
                 app:layout_constraintEnd_toStartOf="@+id/tvOr"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ivPreview"
@@ -174,7 +178,7 @@
                 android:layout_marginRight="40dp"
                 android:layout_marginBottom="16dp"
                 android:text="OR"
-                app:layout_constraintBottom_toTopOf="@+id/etTitle"
+                app:layout_constraintBottom_toTopOf="@+id/imageView5"
                 app:layout_constraintEnd_toStartOf="@+id/btnTakePicture"
                 app:layout_constraintStart_toEndOf="@+id/btnPickFromGallery"
                 app:layout_constraintTop_toBottomOf="@+id/ivPreview"
@@ -184,11 +188,26 @@
                 android:id="@+id/imageView4"
                 android:layout_width="433dp"
                 android:layout_height="266dp"
+                android:visibility="visible"
                 app:layout_constraintBottom_toTopOf="@+id/idCardView"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/searcinbstru" />
+
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="254dp"
+                android:layout_height="202dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="34dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                app:layout_constraintBottom_toTopOf="@+id/btnPickFromGallery"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvOr"
+                app:srcCompat="@drawable/dets" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
