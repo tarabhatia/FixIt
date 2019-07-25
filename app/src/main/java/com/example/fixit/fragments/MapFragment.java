@@ -18,7 +18,6 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.fixit.Issue;
-import com.example.fixit.IssuesAdapter;
 import com.example.fixit.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -34,7 +33,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
@@ -45,12 +43,9 @@ import java.util.List;
 public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private final static String POST_ROUTE = "posts";
-    private IssuesAdapter adapter;
-
-
-    List<Issue> mIssues;
     GoogleMap mGoogleMap;
     MapView mMapView;
+    List<Issue> mIssues;
     View mView;
     FusedLocationProviderClient mFusedLocationProviderClient;
     private static final float DEFAULT_ZOOM = 15f;
@@ -61,7 +56,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getIssues();
     }
 
     @Override
@@ -73,18 +67,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        getIssues();
 
         mMapView = mView.findViewById(R.id.map);
         if (mMapView != null) {
             mMapView.onCreate(null);
             mMapView.onResume();
             mMapView.getMapAsync(this);
-
-
         }
     }
 
-    public void getIssues() {
+    public void getIssues(){
         mIssues = new ArrayList<>();
         Query recentPostsQuery = FirebaseDatabase.getInstance().getReference().child(POST_ROUTE).orderByKey();//.endAt("-Lk59IfKS_d2B1MJs8FZ").limitToLast(2);
         recentPostsQuery.addValueEventListener(new ValueEventListener() {
@@ -93,7 +86,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 for (DataSnapshot issueSnapshot: dataSnapshot.getChildren()) {
                     // TODO: handle the post
                     mIssues.add(issueSnapshot.getValue(Issue.class));
-                  //  adapter.notifyDataSetChanged();
+                    Log.d("getting", issueSnapshot.getValue(Issue.class).getDescription());
                     Log.d("getting", issueSnapshot.getValue(Issue.class).getDescription());
                 }
             }
@@ -108,18 +101,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-
         MapsInitializer.initialize(getContext());
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         for (Issue anIssue : mIssues) {
-            if (anIssue.getLat() != null) {
-                String title = anIssue.getTitle();
-                LatLng marker = new LatLng(anIssue.getLat(), anIssue.getLon());
+            if (anIssue.getLatitude() != null) {
+                LatLng marker = new LatLng(anIssue.getLatitude(), anIssue.getLongitude());
+                Marker myMark = googleMap.addMarker(new MarkerOptions().title(anIssue.getTitle()).position(marker));
                 googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(marker, DEFAULT_ZOOM));
-                final Marker mapMarker = googleMap.addMarker(new MarkerOptions().position(marker).title(title));
-                mapMarker.showInfoWindow();
-                };
+                myMark.showInfoWindow();
+                Log.d("tag", "hey");
             }
-
         }
     }
+}

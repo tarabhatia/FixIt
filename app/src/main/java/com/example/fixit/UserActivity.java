@@ -1,14 +1,13 @@
 package com.example.fixit;
 
+import android.os.Bundle;
+import android.view.MenuItem;
+import android.widget.Toolbar;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-
-import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.example.fixit.fragments.MapFragment;
 import com.example.fixit.fragments.PostFragment;
@@ -24,6 +23,7 @@ public class UserActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
+
         final FragmentManager fragmentManager = getSupportFragmentManager();
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -51,6 +51,6 @@ public class UserActivity extends AppCompatActivity {
             }
         });
         // Sets default selection
-        bottomNavigationView.setSelectedItemId(R.id.action_timeline);
+        bottomNavigationView.setSelectedItemId(R.id.action_post);
     }
 }

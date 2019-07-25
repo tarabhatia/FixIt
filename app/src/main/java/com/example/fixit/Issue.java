@@ -1,42 +1,41 @@
 package com.example.fixit;
 
-import android.location.Geocoder;
-import android.net.Uri;
-
 import java.util.Date;
-import java.util.Locale;
 
 public class Issue {
 
-    User user;
-    String title;
-    String description;
-    Double lat;
-    Double lon;
     String issueID;
     Date date;
-    Uri issuePhoto;
-
+    String title;
+    String description;
+    Integer fixvotes;
+    Location location;
 
     public Issue(){}
 
-
-
-    public Issue(String title, String description, Double lat, Double lon, String issueID){
-        user = null;
-        this.description = description;
-        this.lat = lat;
-        this.lon = lon;
+    public Issue(String title, String key, String description, Location location){
         this.title = title;
-        this.issueID = issueID;
+        this.location = location;
+        this.fixvotes = 0;
+        this.date = new Date();
+        this.description = description;
+        this.issueID = key;
     }
 
-    public User getUser() {
-        return user;
+    public Integer getFixvotes() {
+        return fixvotes;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setFixvotes(Integer fixvotes) {
+        this.fixvotes = fixvotes;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     public String getTitle() {
@@ -55,20 +54,12 @@ public class Issue {
         this.description = description;
     }
 
-    public Double getLat() {
-        return lat;
+    public Date getDate() {
+        return date;
     }
 
-    public void setLat(Double lat) {
-        this.lat = lat;
-    }
-
-    public Double getLon() {
-        return lon;
-    }
-
-    public void setLon(Double lon) {
-        this.lon = lon;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public String getIssueID() {
@@ -79,19 +70,14 @@ public class Issue {
         this.issueID = issueID;
     }
 
-    public Date getDate() {
-        return date;
+
+    public Double getLatitude() {
+        return location.getLatitude();
     }
 
-    public void setDate(Date date) {
-        this.date = date;
-    }
 
-//    public void getLat(String city) {
-//        GeoPoint startGP = new GeoPoint(
-//                (int) (Double.parseDouble(getCity()) * 1E6));
-//        Double.toString((double)startGP.getLatitudeE6() / 1E6),
-//                Double.toString((double)dest.getLongitudeE6() / 1E6)
-//    }
+    public Double getLongitude() {
+        return location.getLongitude();
+    }
 
 }
